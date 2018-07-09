@@ -15,21 +15,10 @@
         titlebar:centerType="textView"
         titlebar:titleBarColor="@color/color_title"
         titlebar:leftType="textView" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/tartget_plan"/>
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/tartget_plan2"/>
-
-    <Button
-        android:id="@+id/bt_create_jump"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/create_plan"
-        android:textColor="@color/colorAccent"/>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
