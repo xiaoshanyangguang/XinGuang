@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "F:\\github\\android-titlebar-master\\android-titlebar-master\\library\\build\\intermediates\\res\\merged\\debug\\layout-v11\\notification_template_big_media_custom.xml",
+        "source": "C:\\Users\\pb\\.android\\build-cache\\6221c225952bcd95f6655eca3473be952ed30704\\output\\res\\layout-v11\\notification_template_big_media_custom.xml"
+    },
+    {
+        "merged": "F:\\github\\android-titlebar-master\\android-titlebar-master\\library\\build\\intermediates\\res\\merged\\debug\\layout-v11\\notification_media_cancel_action.xml",
+        "source": "C:\\Users\\pb\\.android\\build-cache\\6221c225952bcd95f6655eca3473be952ed30704\\output\\res\\layout-v11\\notification_media_cancel_action.xml"
+    },
+    {
+        "merged": "F:\\github\\android-titlebar-master\\android-titlebar-master\\library\\build\\intermediates\\res\\merged\\debug\\layout-v11\\notification_template_big_media_narrow_custom.xml",
+        "source": "C:\\Users\\pb\\.android\\build-cache\\6221c225952bcd95f6655eca3473be952ed30704\\output\\res\\layout-v11\\notification_template_big_media_narrow_custom.xml"
+    },
+    {
+        "merged": "F:\\github\\android-titlebar-master\\android-titlebar-master\\library\\build\\intermediates\\res\\merged\\debug\\layout-v11\\notification_template_big_media_narrow.xml",
+        "source": "C:\\Users\\pb\\.android\\build-cache\\6221c225952bcd95f6655eca3473be952ed30704\\output\\res\\layout-v11\\notification_template_big_media_narrow.xml"
+    },
+    {
+        "merged": "F:\\github\\android-titlebar-master\\android-titlebar-master\\library\\build\\intermediates\\res\\merged\\debug\\layout-v11\\notification_template_big_media.xml",
+        "source": "C:\\Users\\pb\\.android\\build-cache\\6221c225952bcd95f6655eca3473be952ed30704\\output\\res\\layout-v11\\notification_template_big_media.xml"
+    },
+    {
+        "merged": "F:\\github\\android-titlebar-master\\android-titlebar-master\\library\\build\\intermediates\\res\\merged\\debug\\layout-v11\\notification_media_action.xml",
+        "source": "C:\\Users\\pb\\.android\\build-cache\\6221c225952bcd95f6655eca3473be952ed30704\\output\\res\\layout-v11\\notification_media_action.xml"
+    }
+]

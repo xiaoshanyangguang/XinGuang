@@ -14,7 +14,8 @@
         titlebar:statusBarColor="@color/color_title"
         titlebar:centerType="textView"
         titlebar:titleBarColor="@color/color_title"
-        titlebar:leftType="textView" />
+        titlebar:rightType="imageButton"
+        titlebar:rightImageResource="@drawable/chuangjian_256_256"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"

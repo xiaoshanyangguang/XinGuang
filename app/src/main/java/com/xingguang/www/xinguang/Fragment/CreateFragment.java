@@ -30,9 +30,10 @@ public class CreateFragment extends BaseFragment implements View.OnClickListener
     private Button mNextButton;
     private RecyclerView mRecyclerView;
     private ArrayList<HomeItem> mDataList;
-    private static final String[] TITLE = {"Animation", "MultipleItem", "Header/Footer", "PullToRefresh", "Section", "EmptyView", "DragAndSwipe", "ItemClick", "ExpandableItem", "DataBinding", "UpFetchData"};
-    private static final Class<?>[] ACTIVITY = {MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class,MainActivity.class};
-    private static final int[] IMG = {R.drawable.gv_animation, R.drawable.gv_multipleltem, R.drawable.gv_header_and_footer, R.drawable.gv_pulltorefresh, R.drawable.gv_section, R.drawable.gv_empty, R.drawable.gv_drag_and_swipe, R.drawable.gv_item_click, R.drawable.gv_expandable, R.drawable.gv_databinding,R.drawable.gv_databinding};
+    private  final String[] TITLE = {"创建计划", "安卓面试学习计划", "待定计划", "待定计划", "待定计划", "待定计划", "待定计划", "待定计划", "待定计划", "待定计划", "待定计划"};
+    private  final int[] CONTENT = {R.string.title_create_plan, R.string.title_create_plan2, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3};
+    private  final Class<?>[] ACTIVITY = {MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class,MainActivity.class};
+    private  final int[] IMG = {R.drawable.hetangyuese2, R.drawable.tiankong2, R.drawable.gv_header_and_footer, R.drawable.gv_pulltorefresh, R.drawable.gv_section, R.drawable.gv_empty, R.drawable.gv_drag_and_swipe, R.drawable.gv_item_click, R.drawable.gv_expandable, R.drawable.gv_databinding,R.drawable.gv_databinding};
 
 
     public static CreateFragment newInstance() {
@@ -55,16 +56,14 @@ public class CreateFragment extends BaseFragment implements View.OnClickListener
     }
 
     private void initView(View inflate) {
-//        mNextButton = (Button) inflate.findViewById(R.id.bt_create_jump);
-        mRecyclerView = (RecyclerView) inflate.findViewById(R.id.recyclerview);
-//        mNextButton.setOnClickListener(this);
+        mRecyclerView =  inflate.findViewById(R.id.recyclerview);
     }
 
     private void initAdapter() {
         BaseQuickAdapter homeAdapter = new HomeAdapter(R.layout.activity_success, mDataList);
         homeAdapter.openLoadAnimation();
-        View top = getLayoutInflater().inflate(R.layout.top_view, (ViewGroup) mRecyclerView.getParent(), false);
-        homeAdapter.addHeaderView(top);
+//        View top = getLayoutInflater().inflate(R.layout.top_view, (ViewGroup) mRecyclerView.getParent(), false);
+//        homeAdapter.addHeaderView(top);
         homeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -90,6 +89,7 @@ public class CreateFragment extends BaseFragment implements View.OnClickListener
         for (int i = 0; i < TITLE.length; i++) {
             HomeItem item = new HomeItem();
             item.setTitle(TITLE[i]);
+            item.setContent(CONTENT[i]);
             item.setActivity(ACTIVITY[i]);
             item.setImageResource(IMG[i]);
             mDataList.add(item);
