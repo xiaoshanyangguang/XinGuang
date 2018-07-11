@@ -13,11 +13,10 @@ import android.widget.Button;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.xingguang.www.xinguang.FragmentUtil.FragmentConfig;
 import com.xingguang.www.xinguang.R;
-import com.xingguang.www.xinguang.activity.MainActivity;
-import com.xingguang.www.xinguang.entity.HomeItem;
-import com.xingguang.www.xinguang.homeadapter.HomeAdapter;
-
-import java.util.ArrayList;
+import com.xingguang.www.xinguang.datamanager.DataImpl;
+import com.xingguang.www.xinguang.entity.CreateFragmentBean;
+import com.xingguang.www.xinguang.homeadapter.MyPlanAdapter;
+import com.xingguang.www.xinguang.homeadapter.RecommendPlanAdapter;
 
 /**
  * @创建者 pengbo
@@ -27,13 +26,15 @@ import java.util.ArrayList;
 
 public class CreateFragment extends BaseFragment implements View.OnClickListener {
 
-    private Button mNextButton;
-    private RecyclerView mRecyclerView;
-    private ArrayList<HomeItem> mDataList;
-    private  final String[] TITLE = {"创建计划", "安卓面试学习计划", "待定计划", "待定计划", "待定计划", "待定计划", "待定计划", "待定计划", "待定计划", "待定计划", "待定计划"};
-    private  final int[] CONTENT = {R.string.title_create_plan, R.string.title_create_plan2, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3, R.string.title_create_plan3};
-    private  final Class<?>[] ACTIVITY = {MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class, MainActivity.class,MainActivity.class};
-    private  final int[] IMG = {R.drawable.hetangyuese2, R.drawable.tiankong2, R.drawable.gv_header_and_footer, R.drawable.gv_pulltorefresh, R.drawable.gv_section, R.drawable.gv_empty, R.drawable.gv_drag_and_swipe, R.drawable.gv_item_click, R.drawable.gv_expandable, R.drawable.gv_databinding,R.drawable.gv_databinding};
+    private       Button       mNextButton;
+    private       RecyclerView mMyPlanRecyclerView;
+    private       RecyclerView mRecommendRecyclerView;
+    private final int[]        IMG = {R.drawable.hetangyuese2, R.drawable.tiankong2, R.drawable.gv_header_and_footer,
+            R.drawable.gv_pulltorefresh, R.drawable.gv_section, R.drawable.gv_empty, R.drawable.gv_drag_and_swipe, R
+            .drawable.gv_item_click, R.drawable.gv_expandable, R.drawable.gv_databinding, R.drawable.gv_databinding};
+
+
+    private CreateFragmentBean mCreateFragmentData;
 
 
     public static CreateFragment newInstance() {
@@ -48,32 +49,29 @@ public class CreateFragment extends BaseFragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         View inflate = inflater.inflate(R.layout.fragment_create, container, false);
-        initView(inflate);
         initData();
-        initAdapter();
+        initView(inflate);
         Log.i(TAG, "onCreateView");
         return inflate;
     }
 
-    private void initView(View inflate) {
-        mRecyclerView =  inflate.findViewById(R.id.recyclerview);
+    private void initData() {
+        mCreateFragmentData = DataImpl.getCreateFragmentData();
     }
 
-    private void initAdapter() {
-        BaseQuickAdapter homeAdapter = new HomeAdapter(R.layout.activity_success, mDataList);
-        homeAdapter.openLoadAnimation();
-//        View top = getLayoutInflater().inflate(R.layout.top_view, (ViewGroup) mRecyclerView.getParent(), false);
-//        homeAdapter.addHeaderView(top);
-        homeAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                Intent intent = new Intent(HomeActivity.this, ACTIVITY[position]);
-//                startActivity(intent);
-            }
-        });
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mRecyclerView.setAdapter(homeAdapter);
+    private void initView(View inflate) {
+        mMyPlanRecyclerView = inflate.findViewById(R.id.recyclerview_my_plan);
+        BaseQuickAdapter homeAdapter = new MyPlanAdapter(R.layout.item_create_fragment, mCreateFragmentData
+                .getMyplans());
+        initRecycleView(mMyPlanRecyclerView, initAdapter(homeAdapter));
+
+        mRecommendRecyclerView = inflate.findViewById(R.id.recyclerview_recommedn_plan);
+        BaseQuickAdapter recommendPlanAdapter = new RecommendPlanAdapter(R.layout.item_create_fragment,
+                mCreateFragmentData.getRecommendplans());
+        initRecycleView(mRecommendRecyclerView, initAdapter(recommendPlanAdapter));
     }
+
+
     @Override
     public void onClick(View v) {
         int id = v.getId();
@@ -84,15 +82,23 @@ public class CreateFragment extends BaseFragment implements View.OnClickListener
         }
     }
 
-    private void initData() {
-        mDataList = new ArrayList<>();
-        for (int i = 0; i < TITLE.length; i++) {
-            HomeItem item = new HomeItem();
-            item.setTitle(TITLE[i]);
-            item.setContent(CONTENT[i]);
-            item.setActivity(ACTIVITY[i]);
-            item.setImageResource(IMG[i]);
-            mDataList.add(item);
-        }
+
+    private BaseQuickAdapter initAdapter(BaseQuickAdapter baseQuickAdapter) {
+        baseQuickAdapter.openLoadAnimation();
+        baseQuickAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                //                Intent intent = new Intent(HomeActivity.this, ACTIVITY[position]);
+                //                startActivity(intent);
+            }
+        });
+        return baseQuickAdapter;
     }
+
+    private void initRecycleView(RecyclerView recyclerView, BaseQuickAdapter baseQuickAdapter) {
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setAdapter(baseQuickAdapter);
+    }
+
+
 }

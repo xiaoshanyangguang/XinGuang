@@ -11,15 +11,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         titlebar:centerText="@string/create_plan"
-        titlebar:statusBarColor="@color/color_title"
         titlebar:centerType="textView"
-        titlebar:titleBarColor="@color/color_title"
+        titlebar:rightImageResource="@drawable/chuangjian_256_256"
         titlebar:rightType="imageButton"
-        titlebar:rightImageResource="@drawable/chuangjian_256_256"/>
+        titlebar:statusBarColor="@color/color_title"
+        titlebar:titleBarColor="@color/color_title"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerview_my_plan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerview_recommedn_plan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

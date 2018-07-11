@@ -53,6 +53,11 @@ public class BaseFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
     public interface FragmentOnclickListener {
         void onFragmentClick(int id, FragmentConfig targetFragment);
     }
