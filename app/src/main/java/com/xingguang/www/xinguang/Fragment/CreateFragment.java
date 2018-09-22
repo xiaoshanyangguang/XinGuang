@@ -98,6 +98,7 @@ public class CreateFragment extends BaseFragment implements View.OnClickListener
     private void initRecycleView(RecyclerView recyclerView, BaseQuickAdapter baseQuickAdapter) {
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(baseQuickAdapter);
+        recyclerView.setNestedScrollingEnabled(false);
     }
 
 

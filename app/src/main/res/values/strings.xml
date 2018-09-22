@@ -10,4 +10,6 @@
     <string name="title_create_plan3">待定计划</string>
     <string name="title_create_plan4">创建时间:2018/07/09</string>
     <string name="title_create_plan5">参与人数:98</string>
+    <string name="my_plan">我的计划</string>
+    <string name="recommend_plan">推荐计划</string>
 </resources>
