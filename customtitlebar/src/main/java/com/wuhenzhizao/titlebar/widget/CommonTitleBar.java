@@ -990,4 +990,8 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
     public interface OnTitleBarDoubleClickListener {
         void onClicked(View v);
     }
+
+    public void setTitle(String centerText){
+        tvCenter.setText(centerText);
+    }
 }

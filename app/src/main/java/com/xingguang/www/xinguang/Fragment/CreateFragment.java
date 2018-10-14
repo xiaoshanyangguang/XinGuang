@@ -2,7 +2,7 @@ package com.xingguang.www.xinguang.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,12 +11,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.xingguang.www.xinguang.FragmentUtil.FragmentConfig;
 import com.xingguang.www.xinguang.R;
+import com.xingguang.www.xinguang.adapter.CreateSectionAdapter;
+import com.xingguang.www.xinguang.base.JumpInterface;
 import com.xingguang.www.xinguang.datamanager.DataImpl;
-import com.xingguang.www.xinguang.entity.CreateFragmentBean;
-import com.xingguang.www.xinguang.homeadapter.MyPlanAdapter;
-import com.xingguang.www.xinguang.homeadapter.RecommendPlanAdapter;
+import com.xingguang.www.xinguang.entity.MySection;
+
+import java.util.List;
 
 /**
  * @创建者 pengbo
@@ -34,7 +35,7 @@ public class CreateFragment extends BaseFragment implements View.OnClickListener
             .drawable.gv_item_click, R.drawable.gv_expandable, R.drawable.gv_databinding, R.drawable.gv_databinding};
 
 
-    private CreateFragmentBean mCreateFragmentData;
+    private List<MySection> mCreateFragmentData;
 
 
     public static CreateFragment newInstance() {
@@ -44,42 +45,28 @@ public class CreateFragment extends BaseFragment implements View.OnClickListener
         return mainFragment;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+    public void initData(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
+        mCreateFragmentData = DataImpl.getCreateSampleData();
+    }
+
+    public View initView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         View inflate = inflater.inflate(R.layout.fragment_create, container, false);
-        initData();
-        initView(inflate);
-        Log.i(TAG, "onCreateView");
-        return inflate;
-    }
-
-    private void initData() {
-        mCreateFragmentData = DataImpl.getCreateFragmentData();
-    }
-
-    private void initView(View inflate) {
         mMyPlanRecyclerView = inflate.findViewById(R.id.recyclerview_my_plan);
-        BaseQuickAdapter homeAdapter = new MyPlanAdapter(R.layout.item_create_fragment, mCreateFragmentData
-                .getMyplans());
-        initRecycleView(mMyPlanRecyclerView, initAdapter(homeAdapter));
-
-        mRecommendRecyclerView = inflate.findViewById(R.id.recyclerview_recommedn_plan);
-        BaseQuickAdapter recommendPlanAdapter = new RecommendPlanAdapter(R.layout.item_create_fragment,
-                mCreateFragmentData.getRecommendplans());
-        initRecycleView(mRecommendRecyclerView, initAdapter(recommendPlanAdapter));
+        mMyPlanRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 1));
+        CreateSectionAdapter sectionAdapter = new CreateSectionAdapter(R.layout.item_create_fragment, R.layout.item_create_head,
+                mCreateFragmentData);
+        BaseQuickAdapter baseQuickAdapter = initAdapter(sectionAdapter);
+        mMyPlanRecyclerView.setAdapter(baseQuickAdapter);
+        return inflate;
     }
 
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.bt_create_jump) {
-            if (null != mFragmentOnclickListener) {
-                mFragmentOnclickListener.onFragmentClick(id, FragmentConfig.TARGETFRAGMENT);
-            }
-        }
+
     }
 
 
@@ -88,18 +75,20 @@ public class CreateFragment extends BaseFragment implements View.OnClickListener
         baseQuickAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                //                Intent intent = new Intent(HomeActivity.this, ACTIVITY[position]);
-                //                startActivity(intent);
+                MySection mySection = mCreateFragmentData.get(position);
+                if (mySection.isHeader) {
+                    Log.i(TAG, "initAdapter1");
+                } else {
+                    if (mContext instanceof JumpInterface) {
+                        DetailFragment targetFragment = DetailFragment.newInstance(mCreateFragmentData.get(position)
+                                .t.getTitle());
+                        ((JumpInterface) mContext).jumpFragment(targetFragment);
+                    }
+                    Log.i(TAG, "initAdapter2");
+                }
             }
         });
         return baseQuickAdapter;
     }
-
-    private void initRecycleView(RecyclerView recyclerView, BaseQuickAdapter baseQuickAdapter) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerView.setAdapter(baseQuickAdapter);
-        recyclerView.setNestedScrollingEnabled(false);
-    }
-
 
 }

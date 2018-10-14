@@ -4,24 +4,21 @@
     xmlns:titlebar="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
+
 
     <com.wuhenzhizao.titlebar.widget.CommonTitleBar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        titlebar:centerText="@string/create_plan"
+        titlebar:centerText="@string/my_plan"
         titlebar:centerType="textView"
-        titlebar:rightImageResource="@drawable/chuangjian_256_256"
-        titlebar:rightType="imageButton"
         titlebar:statusBarColor="@color/color_title"
         titlebar:titleBarColor="@color/color_title"/>
 
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview_my_plan"
+        android:id="@+id/recyclerview_detail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
+        android:layout_height="match_parent"/>
 </LinearLayout>

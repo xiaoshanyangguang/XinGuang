@@ -6,6 +6,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 
 import com.xingguang.www.xinguang.FragmentUtil.AnimatorHelper;
@@ -20,18 +23,19 @@ import com.xingguang.www.xinguang.FragmentUtil.anim.FragmentAnimator;
  */
 
 public class BaseFragment extends Fragment {
-    protected  String FRAGMENT_ARG_IS_ROOT = "fragment_arg_is_root";
-    protected static final String TAG = BaseFragment.class.getName();
-    protected Context mContext;
-    public FragmentOnclickListener mFragmentOnclickListener;
-    private AnimatorHelper mAnimHelper;
-    private boolean mIsRoot;
+    protected              String                  FRAGMENT_ARG_IS_ROOT = "fragment_arg_is_root";
+    protected static final String                  TAG                  = BaseFragment.class.getName();
+    protected              Context                 mContext;
+    public                 FragmentOnclickListener mFragmentOnclickListener;
+    private                AnimatorHelper          mAnimHelper;
+    private                boolean                 mIsRoot;
+    private                View                    mBaseView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
-        if(null != arguments){
+        if (null != arguments) {
             mIsRoot = arguments.getBoolean(FRAGMENT_ARG_IS_ROOT);
         }
         mAnimHelper = new AnimatorHelper(mContext, onCreateFragmentAnimator());
@@ -68,22 +72,22 @@ public class BaseFragment extends Fragment {
 
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
-        if(transit == FragmentTransaction.TRANSIT_FRAGMENT_OPEN){
-            Log.i(TAG,"onCreateAnimation TRANSIT_FRAGMENT_OPEN:"+transit+"mIsRoot:"+mIsRoot);
-            if(enter){
-                if(mIsRoot){
+        if (transit == FragmentTransaction.TRANSIT_FRAGMENT_OPEN) {
+            Log.i(TAG, "onCreateAnimation TRANSIT_FRAGMENT_OPEN:" + transit + "mIsRoot:" + mIsRoot);
+            if (enter) {
+                if (mIsRoot) {
                     return mAnimHelper.getNoneAnim();
                 }
                 return mAnimHelper.enterAnim;
-            }else{
+            } else {
                 return mAnimHelper.exitAnim;
             }
         }
-        if(transit == FragmentTransaction.TRANSIT_FRAGMENT_CLOSE){
-            Log.i(TAG,"onCreateAnimation TRANSIT_FRAGMENT_CLOSE:"+transit);
-            if(enter){
+        if (transit == FragmentTransaction.TRANSIT_FRAGMENT_CLOSE) {
+            Log.i(TAG, "onCreateAnimation TRANSIT_FRAGMENT_CLOSE:" + transit);
+            if (enter) {
                 return mAnimHelper.popEnterAnim;
-            }else{
+            } else {
                 return mAnimHelper.popExitAnim;
             }
         }
@@ -110,9 +114,31 @@ public class BaseFragment extends Fragment {
         return new DefaultHorizontalAnimator();
     }
 
-    public void setIsRoot(boolean isRoot){
+    public void setIsRoot(boolean isRoot) {
         Bundle arguments = getArguments();
-        arguments.putBoolean(FRAGMENT_ARG_IS_ROOT,isRoot);
+        arguments.putBoolean(FRAGMENT_ARG_IS_ROOT, isRoot);
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
+        initData(inflater,container,savedInstanceState);
+        mBaseView = initView(inflater,container,savedInstanceState);
+        if (null == mBaseView) {
+            return super.onCreateView(inflater, container, savedInstanceState);
+        } else {
+            return mBaseView;
+        }
+    }
+
+    protected View initView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
+        return null;
+    }
+
+    protected void initData(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
+            savedInstanceState) {
+
+    }
 }

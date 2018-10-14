@@ -28,6 +28,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.LayoutParams;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -954,11 +955,14 @@ public abstract class BaseQuickAdapter<T, K extends BaseViewHolder> extends Recy
     }
 
     private void bindViewClickListener(final BaseViewHolder baseViewHolder) {
+        Log.i(TAG,"bindViewClickListener");
         if (baseViewHolder == null) {
+            Log.i(TAG,"baseViewHolder == null");
             return;
         }
         final View view = baseViewHolder.itemView;
         if (view == null) {
+            Log.i(TAG,"view == null");
             return;
         }
         if (getOnItemClickListener() != null) {
