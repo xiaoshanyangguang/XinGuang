@@ -29,14 +29,14 @@ public class DetailSectionAdapter extends BaseSectionQuickAdapter<DetailSection,
 
     @Override
     protected void convertHead(BaseViewHolder helper, final DetailSection item) {
-        Log.i(TAG,"convertHead"+item.header);
-        helper.setText(R.id.tv_title, item.header);
+        Log.i(TAG,"convertHead"+item.getHeader());
+        helper.setText(R.id.tv_title, item.getHeader());
     }
 
 
     @Override
     protected void convert(BaseViewHolder helper, DetailSection item) {
-        DetailFragmentItemEntity video =  item.t;
+        DetailFragmentItemEntity video =  item.getData();
         Log.i(TAG,"convert"+video.getContent());
         helper.setText(R.id.tv_content, video.getContent());
     }

@@ -75,13 +75,12 @@ public class DetailFragment extends BaseFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 DetailSection detailSection = mDetailData.get(position);
-                if (detailSection.isHeader) {
+                if (detailSection.isHeader()) {
                     Log.i(TAG, "initAdapter1");
                 } else {
                     if (mContext instanceof JumpInterface) {
-//                        DetailFragment targetFragment = DetailFragment.newInstance(detailSection.get(position)
-//                                .t.getTitle());
-//                        ((JumpInterface) mContext).jumpFragment(targetFragment);
+                        ContentFragment targetFragment = ContentFragment.newInstance(detailSection.getData().getContent());
+                        ((JumpInterface) mContext).jumpFragment(targetFragment);
                     }
                     Log.i(TAG, "initAdapter2");
                 }

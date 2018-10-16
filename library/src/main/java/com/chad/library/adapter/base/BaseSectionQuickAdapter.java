@@ -30,7 +30,7 @@ public abstract class BaseSectionQuickAdapter<T extends SectionEntity, K extends
 
     @Override
     protected int getDefItemViewType(int position) {
-        return mData.get(position).isHeader ? SECTION_HEADER_VIEW : 0;
+        return mData.get(position).isHeader() ? SECTION_HEADER_VIEW : 0;
     }
 
     @Override

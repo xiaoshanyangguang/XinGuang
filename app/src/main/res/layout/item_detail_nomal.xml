@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-          android:id="@+id/tv_content"
+<TextView android:id="@+id/tv_content"
+          xmlns:android="http://schemas.android.com/apk/res/android"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:background="@drawable/tv_bg_selector"
+          android:clickable="true"
+          android:gravity="center_vertical"
+          android:minHeight="@dimen/dp_25"
+          android:paddingStart="@dimen/dp_16"
     >
 </TextView>

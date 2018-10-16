@@ -27,13 +27,13 @@ public class CreateSectionAdapter extends BaseSectionQuickAdapter<MySection, Bas
 
     @Override
     protected void convertHead(BaseViewHolder helper, final MySection item) {
-        helper.setText(R.id.tv_title, item.header);
+        helper.setText(R.id.tv_title, item.getHeader());
     }
 
 
     @Override
     protected void convert(BaseViewHolder helper, MySection item) {
-        CreateFragmentItemEntity video =  item.t;
+        CreateFragmentItemEntity video =  item.getData();
         helper.setText(R.id.tv_title, video.getTitle());
         helper.setText(R.id.tv_content, video.getContent());
 

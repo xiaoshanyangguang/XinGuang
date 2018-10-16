@@ -35,15 +35,11 @@ public class DataImpl {
         return new Gson().fromJson(json, CreateFragmentBean.class);
     }
 
-    public static List<MultipleItem> getMultipleItemData() {
+    public static List<MultipleItem> getMultipleItemData(List<String> systemPhotoList) {
         List<MultipleItem> list = new ArrayList<>();
-        for (int i = 0; i <= 4; i++) {
-            list.add(new MultipleItem(MultipleItem.IMG, MultipleItem.IMG_SPAN_SIZE));
-            list.add(new MultipleItem(MultipleItem.TEXT, MultipleItem.TEXT_SPAN_SIZE, "--"));
-            list.add(new MultipleItem(MultipleItem.IMG_TEXT, MultipleItem.IMG_TEXT_SPAN_SIZE));
-            list.add(new MultipleItem(MultipleItem.IMG_TEXT, MultipleItem.IMG_TEXT_SPAN_SIZE_MIN));
-            list.add(new MultipleItem(MultipleItem.IMG_TEXT, MultipleItem.IMG_TEXT_SPAN_SIZE_MIN));
-        }
+        list.add(new MultipleItem(MultipleItem.PICTURE, MultipleItem.PICTURE_SIZE, systemPhotoList));
+        list.add(new MultipleItem(MultipleItem.LINK, MultipleItem.LINK_SIZE));
+        list.add(new MultipleItem(MultipleItem.TEXT, MultipleItem.TEXT_SIZE));
 
         return list;
     }
@@ -68,31 +64,90 @@ public class DataImpl {
 
         return list;
     }
-
+    //安卓权限
     public static List<DetailSection> getDetailSampleData() {
         List<DetailSection> list = new ArrayList<>();
-        list.add(new DetailSection(true, "掌握内容", true));
-        for (int i = 0; i < 2; i++) {
-            DetailFragmentItemEntity createFragmentItemEntity = new DetailFragmentItemEntity();
-            createFragmentItemEntity.setId("");
-            createFragmentItemEntity.setContent("掌握内容" + i + "\n");
-            list.add(new DetailSection(createFragmentItemEntity));
-        }
-        list.add(new DetailSection(true, "学习方式", true));
-        for (int i = 0; i < 4; i++) {
-            DetailFragmentItemEntity createFragmentItemEntity = new DetailFragmentItemEntity();
-            createFragmentItemEntity.setId("");
-            createFragmentItemEntity.setContent("学习方式" + i + "\n");
-            list.add(new DetailSection(createFragmentItemEntity));
-        }
-        list.add(new DetailSection(true, "评价方式", true));
-        for (int i = 0; i < 4; i++) {
-            DetailFragmentItemEntity createFragmentItemEntity = new DetailFragmentItemEntity();
-            createFragmentItemEntity.setId("");
-            createFragmentItemEntity.setContent("评价方式" + i + "\n");
-            list.add(new DetailSection(createFragmentItemEntity));
-        }
+        list.add(new DetailSection(true, "内容", true));
+        DetailFragmentItemEntity createFragmentItemEntity1 = new DetailFragmentItemEntity();
+        createFragmentItemEntity1.setId("");
+        createFragmentItemEntity1.setContent("1.UI框架(点击进入具体的知识点,采用图片，链接，文字的形式))");
+        list.add(new DetailSection(createFragmentItemEntity1));
+
+        DetailFragmentItemEntity createFragmentItemEntity2 = new DetailFragmentItemEntity();
+        createFragmentItemEntity2.setId("");
+        createFragmentItemEntity2.setContent("2.单activity多fragment");
+        list.add(new DetailSection(createFragmentItemEntity2));
+
+
+        DetailFragmentItemEntity createFragmentItemEntity3 = new DetailFragmentItemEntity();
+        createFragmentItemEntity3.setId("");
+        createFragmentItemEntity3.setContent("3.自定义控件");
+
+        list.add(new DetailSection(createFragmentItemEntity3));
+
+
+        DetailFragmentItemEntity createFragmentItemEntity4 = new DetailFragmentItemEntity();
+        createFragmentItemEntity4.setId("");
+        createFragmentItemEntity4.setContent("4.MVP架构");
+        list.add(new DetailSection(createFragmentItemEntity4));
+
+
+        list.add(new DetailSection(true, "方法", true));
+        DetailFragmentItemEntity createFragmentItemEntity001 = new DetailFragmentItemEntity();
+        createFragmentItemEntity001.setId("");
+        createFragmentItemEntity001.setContent("上午:6-8(点击进入圈子,这个时间点的人的打卡)");
+        list.add(new DetailSection(createFragmentItemEntity001));
+
+        DetailFragmentItemEntity createFragmentItemEntity002 = new DetailFragmentItemEntity();
+        createFragmentItemEntity002.setId("");
+        createFragmentItemEntity002.setContent("下午:18-20");
+        list.add(new DetailSection(createFragmentItemEntity002));
+
+        DetailFragmentItemEntity createFragmentItemEntity003 = new DetailFragmentItemEntity();
+        createFragmentItemEntity003.setId("");
+        createFragmentItemEntity003.setContent("以及其他零碎时间");
+        list.add(new DetailSection(createFragmentItemEntity003));
+
+
+        list.add(new DetailSection(true, "评价", true));
+        DetailFragmentItemEntity createFragmentItemEntity0001 = new DetailFragmentItemEntity();
+        createFragmentItemEntity0001.setId("");
+        createFragmentItemEntity0001.setContent("1.生动回答ui框架问题(点击进入评价方式的答案)");
+        list.add(new DetailSection(createFragmentItemEntity0001));
+
+        DetailFragmentItemEntity createFragmentItemEntity0002 = new DetailFragmentItemEntity();
+        createFragmentItemEntity0002.setId("");
+        createFragmentItemEntity0002.setContent("2.写出单activity中得主要代码以及回答问题");
+        list.add(new DetailSection(createFragmentItemEntity0002));
+
+        DetailFragmentItemEntity createFragmentItemEntity0003 = new DetailFragmentItemEntity();
+        createFragmentItemEntity0003.setId("");
+        createFragmentItemEntity0003.setContent("3.能掌握圆弧控件的使用以及回答问题如下");
+        list.add(new DetailSection(createFragmentItemEntity0003));
+
+        DetailFragmentItemEntity createFragmentItemEntity0004 = new DetailFragmentItemEntity();
+        createFragmentItemEntity0004.setId("");
+        createFragmentItemEntity0004.setContent("4.掌握xx效果xx框架的标准代码");
+        list.add(new DetailSection(createFragmentItemEntity0004));
+
+
+        //
+        list.add(new DetailSection(true, "成就", true));
+        DetailFragmentItemEntity createFragmentItemEntity01 = new DetailFragmentItemEntity();
+        createFragmentItemEntity01.setId("");
+        createFragmentItemEntity01.setContent("解锁成就1:坚持1天,评价方式1达到");
+        list.add(new DetailSection(createFragmentItemEntity01));
+
+        DetailFragmentItemEntity createFragmentItemEntity02 = new DetailFragmentItemEntity();
+        createFragmentItemEntity02.setId("");
+
+
+        createFragmentItemEntity02.setContent("解锁成就2:坚持3天,评价方式2达到");
+        list.add(new DetailSection(createFragmentItemEntity02));
+
+
         return list;
     }
+
 
 }

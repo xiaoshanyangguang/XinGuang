@@ -76,12 +76,12 @@ public class CreateFragment extends BaseFragment implements View.OnClickListener
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 MySection mySection = mCreateFragmentData.get(position);
-                if (mySection.isHeader) {
+                if (mySection.isHeader()) {
                     Log.i(TAG, "initAdapter1");
                 } else {
                     if (mContext instanceof JumpInterface) {
                         DetailFragment targetFragment = DetailFragment.newInstance(mCreateFragmentData.get(position)
-                                .t.getTitle());
+                                .getData().getTitle());
                         ((JumpInterface) mContext).jumpFragment(targetFragment);
                     }
                     Log.i(TAG, "initAdapter2");
