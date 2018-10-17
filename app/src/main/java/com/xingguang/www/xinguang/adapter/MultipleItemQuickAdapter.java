@@ -11,6 +11,9 @@ import com.xingguang.www.xinguang.entity.MultipleItem;
 
 import java.util.List;
 
+import static com.xingguang.www.xinguang.adapter.PictureAdapter.MORE_PICTURE;
+import static com.xingguang.www.xinguang.adapter.PictureAdapter.TAKE_PHOTO;
+
 /**
  * @创建者 pengbo
  * @创建时间 2018/9/23 21:32
@@ -38,9 +41,13 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<Multiple
         //图片选择模块
         if (item.getItemType() == MultipleItem.PICTURE) {
             RecyclerView recyclerView = helper.getView(R.id.recyclerview_picture);
-
             recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
-            recyclerView.setAdapter(new PictureAdapter(mContext,item.getSystemPhotoList()));
+            //头尾各加一个
+            List<String> systemPhotoList = item.getSystemPhotoList();
+            systemPhotoList.add(0,TAKE_PHOTO);
+            systemPhotoList.add(MORE_PICTURE);
+            PictureAdapter pictureAdapter = new PictureAdapter(mContext, systemPhotoList);
+            recyclerView.setAdapter(pictureAdapter);
         }
     }
 }
