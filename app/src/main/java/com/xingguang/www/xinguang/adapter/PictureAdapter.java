@@ -2,7 +2,6 @@ package com.xingguang.www.xinguang.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.xingguang.www.xinguang.R;
+import com.xingguang.www.xinguang.util.PhotoHelper;
 import com.xingguang.www.xinguang.util.PicassoUtil;
 
 import java.util.ArrayList;
@@ -52,6 +52,12 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.PictureV
             case TAKE_PHOTO:
                 PicassoUtil.showDrawablePicture(R.drawable.take_photo, R.drawable.chuangjian_256_256, holder
                         .mIv_inner_picture);
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        PhotoHelper.fromCamera(mContext);
+                    }
+                });
                 break;
             case MORE_PICTURE:
                 PicassoUtil.showDrawablePicture(R.drawable.picture_more, R.drawable.chuangjian_256_256, holder
@@ -106,7 +112,6 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.PictureV
             if (isHandleDataOpen) {
                 mRealUsedPhotoList.set(CRITICAL_SIZE - 1, mCritical_data);
                 mRealUsedPhotoList.addAll(mLeavePhotoList);
-                        "--" + mLeavePhotoList.size());
             } else {
                 if (mLeavePhotoList.size() == 0) {
                     mOriginPhotoList.removeAll(mRealUsedPhotoList);

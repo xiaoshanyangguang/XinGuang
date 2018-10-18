@@ -10,6 +10,7 @@ import com.xingguang.www.xinguang.Fragment.CreateFragment;
 import com.xingguang.www.xinguang.Fragment.DetailFragment;
 import com.xingguang.www.xinguang.R;
 import com.xingguang.www.xinguang.base.JumpInterface;
+import com.xingguang.www.xinguang.util.AppFileHelper;
 
 import java.util.List;
 
@@ -46,6 +47,13 @@ public class MainActivity extends BaseActivity implements JumpInterface {
         } else {
             finish();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AppFileHelper.initStroagePath(this);
+
     }
 
     /**
