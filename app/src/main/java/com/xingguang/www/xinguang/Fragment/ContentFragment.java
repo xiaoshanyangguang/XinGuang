@@ -14,6 +14,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 import com.xingguang.www.xinguang.R;
 import com.xingguang.www.xinguang.adapter.MultipleItemQuickAdapter;
+import com.xingguang.www.xinguang.base.CameraRefreshInterface;
 import com.xingguang.www.xinguang.datamanager.DataImpl;
 import com.xingguang.www.xinguang.entity.MultipleItem;
 import com.xingguang.www.xinguang.util.CommonUtil;
@@ -25,17 +26,18 @@ import java.util.List;
  * @创建时间 2018/10/16 6:43
  * @描述 TODO
  */
-public class ContentFragment extends BaseFragment {
+public class ContentFragment extends BaseFragment implements CameraRefreshInterface {
     private static final String ID = "id";
     private              String mString;
 
     private List<MultipleItem> mMultipleItems;
+    private MultipleItemQuickAdapter mMultipleItemQuickAdapter;
 
     @Override
     protected void initData(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         super.initData(inflater, container, savedInstanceState);
-        List<String> systemPhotoList = CommonUtil.getSystemPhotoList(mContext);
+        List<String> systemPhotoList = CommonUtil.getAppPhotoList();
         mMultipleItems = DataImpl.getMultipleItemData(systemPhotoList);
     }
 
@@ -64,10 +66,10 @@ public class ContentFragment extends BaseFragment {
         CommonTitleBar commonTitleBar = inflate.findViewById(R.id.titlebar);
         RecyclerView recyclerView = inflate.findViewById(R.id.recyclerview_content);
         commonTitleBar.setTitle(mString);
-        MultipleItemQuickAdapter multipleItemQuickAdapter = new MultipleItemQuickAdapter(mContext, mMultipleItems);
+        mMultipleItemQuickAdapter = new MultipleItemQuickAdapter(mContext, mMultipleItems);
         //        BaseQuickAdapter baseQuickAdapter = initAdapter(sectionAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 1));
-        recyclerView.setAdapter(multipleItemQuickAdapter);
+        recyclerView.setAdapter(mMultipleItemQuickAdapter);
         return inflate;
     }
 
@@ -91,5 +93,10 @@ public class ContentFragment extends BaseFragment {
         //            }
         //        });
         return baseQuickAdapter;
+    }
+
+    @Override
+    public void refreshPictureData(String filePath) {
+        mMultipleItemQuickAdapter.refreshCameraPicture(filePath);
     }
 }

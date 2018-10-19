@@ -3,7 +3,6 @@ package com.xingguang.www.xinguang.util;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
-import com.xingguang.www.xinguang.activity.BaseAppliCation;
 
 /**
  * @创建者 pengbo

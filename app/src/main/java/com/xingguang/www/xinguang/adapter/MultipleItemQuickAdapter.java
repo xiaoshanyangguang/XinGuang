@@ -20,7 +20,8 @@ import static com.xingguang.www.xinguang.adapter.PictureAdapter.TAKE_PHOTO;
  * @描述 TODO
  */
 public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<MultipleItem, BaseViewHolder> {
-    private Context mContext;
+    private Context        mContext;
+    private PictureAdapter mPictureAdapter;
 
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
@@ -36,6 +37,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<Multiple
         mContext = context;
     }
 
+
     @Override
     protected void convert(BaseViewHolder helper, MultipleItem item) {
         //图片选择模块
@@ -44,10 +46,17 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<Multiple
             recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
             //头尾各加一个
             List<String> systemPhotoList = item.getSystemPhotoList();
-            systemPhotoList.add(0,TAKE_PHOTO);
-            systemPhotoList.add(MORE_PICTURE);
-            PictureAdapter pictureAdapter = new PictureAdapter(mContext, systemPhotoList);
-            recyclerView.setAdapter(pictureAdapter);
+            systemPhotoList.add(0, TAKE_PHOTO);
+            if (systemPhotoList.size() > PictureAdapter.CRITICAL_SIZE){
+                systemPhotoList.add(MORE_PICTURE);
+            }
+            mPictureAdapter = new PictureAdapter(mContext, systemPhotoList);
+            recyclerView.setAdapter(mPictureAdapter);
         }
     }
+
+    public void refreshCameraPicture(String filePath) {
+        mPictureAdapter.notifyData(filePath);
+    }
+
 }

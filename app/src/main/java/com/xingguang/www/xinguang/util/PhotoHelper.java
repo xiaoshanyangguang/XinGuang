@@ -1,19 +1,14 @@
 package com.xingguang.www.xinguang.util;
 
 
-import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.xingguang.www.xinguang.base.IPermission;
 import com.xingguang.www.xinguang.base.OnPermissionGrantListener;
@@ -51,7 +46,7 @@ public class PhotoHelper {
 
 
     public static void fromCamera(Object obj) {
-        fromCamera(obj, true);
+        fromCamera(obj, false);
     }
 
     public static void fromCamera(Object obj, boolean needCrop) {
@@ -135,13 +130,6 @@ public class PhotoHelper {
         if (CompatHelper.isOverM()) {
             cameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             cameraIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        }
-        //检查是否有存储权限，以免崩溃
-        if (ContextCompat.checkSelfPermission((Context) object, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            //申请WRITE_EXTERNAL_STORAGE权限
-            Toast.makeText((Context) object,"请开启存储权限",Toast.LENGTH_SHORT).show();
-            return;
         }
         if (object instanceof Activity) {
             ((Activity) object).startActivityForResult(cameraIntent, needCrop ? REQUEST_FROM_CAMERA : REQUEST_FROM_CAMERA_WITHO_OUT_CROP);

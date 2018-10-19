@@ -120,6 +120,26 @@ public class CommonUtil {
         return result;
     }
 
+    public static List<String> getAppPhotoList() {
+        String appPicPath = AppFileHelper.getCameraPath();
+        Log.i(TAG, "appPicPath" + appPicPath);
+        return getFilesAllName(appPicPath);
+    }
+
+    public static List<String> getFilesAllName(String path) {
+        File file = new File(path);
+        File[] files = file.listFiles();
+        if (files == null) {
+            Log.e("error", "空目录");
+            return null;
+        }
+        List<String> s = new ArrayList<>();
+        for (int i = files.length - 1; i >= 0; i--) {
+            Log.i(TAG, "files[i].getAbsolutePath(" + files[i].getAbsolutePath());
+            s.add(files[i].getAbsolutePath());
+        }
+        return s;
+    }
 
     /**
      * Checks if the app has permission to write to device storage

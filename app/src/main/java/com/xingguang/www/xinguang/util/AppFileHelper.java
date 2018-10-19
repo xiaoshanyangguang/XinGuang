@@ -20,6 +20,8 @@ import java.util.Locale;
 
 /**
  * Created by 大灯泡 on 2017/3/23.
+ *
+ * https://github.com/razerdp/FriendCircle
  * <p>
  * app文件helper，针对7.0，需要留意path与filepaths一致
  */
@@ -29,7 +31,7 @@ public class AppFileHelper {
     private static final String TAG = "AppFileHelper";
 
     public static final String[] INTERNAL_STORAGE_PATHS = new String[]{"/mnt/", "/emmc/"};
-    public static final String ROOT_PATH = "razerdp/github/friendcircle/";
+    public static final String ROOT_PATH = "com/xinguang/";
     public static final String DATA_PATH = ROOT_PATH + "data/";
     public static final String CACHE_PATH = ROOT_PATH + "cache/";
     public static final String PIC_PATH = ROOT_PATH + "pic/";

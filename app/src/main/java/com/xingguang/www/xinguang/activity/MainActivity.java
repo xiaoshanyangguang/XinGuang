@@ -1,16 +1,20 @@
 package com.xingguang.www.xinguang.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 import com.xingguang.www.xinguang.Fragment.BaseFragment;
 import com.xingguang.www.xinguang.Fragment.CreateFragment;
 import com.xingguang.www.xinguang.Fragment.DetailFragment;
 import com.xingguang.www.xinguang.R;
+import com.xingguang.www.xinguang.base.CameraRefreshInterface;
 import com.xingguang.www.xinguang.base.JumpInterface;
 import com.xingguang.www.xinguang.util.AppFileHelper;
+import com.xingguang.www.xinguang.util.PhotoHelper;
 
 import java.util.List;
 
@@ -19,6 +23,7 @@ public class MainActivity extends BaseActivity implements JumpInterface {
     private static final String         TAG = "MainActivity";
     private              BaseFragment   mCreatelanFragment;
     private              DetailFragment mTargetFragment;
+    private              Fragment       mCurrentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,7 @@ public class MainActivity extends BaseActivity implements JumpInterface {
 
     @Override
     public void jumpFragment(Fragment toFragment) {
+        mCurrentFragment = toFragment;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         //        fragmentTransaction.setCustomAnimations(R.anim.h_fragment_enter,R.anim.h_fragment_exit);
@@ -47,6 +53,25 @@ public class MainActivity extends BaseActivity implements JumpInterface {
         } else {
             finish();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        PhotoHelper.handleActivityResult(this, requestCode, resultCode, data, new PhotoHelper.PhotoCallback() {
+            @Override
+            public void onFinish(String filePath) {
+                Log.i(TAG, "filePath:" + filePath);
+                if (mCurrentFragment instanceof CameraRefreshInterface) {
+                    ((CameraRefreshInterface) mCurrentFragment).refreshPictureData(filePath);
+                }
+            }
+
+            @Override
+            public void onError(String msg) {
+
+            }
+        });
     }
 
     @Override

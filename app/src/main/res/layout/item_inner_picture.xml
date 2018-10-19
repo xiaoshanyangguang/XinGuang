@@ -9,7 +9,7 @@
         android:layout_width="@dimen/dp_72"
         android:layout_height="@dimen/dp_72"
         android:src="@mipmap/stars"
-        android:scaleType="centerCrop"/>
+        android:scaleType="fitCenter"/>
 
     <TextView
         android:id="@+id/tv__inner_picture"
