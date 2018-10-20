@@ -8,19 +8,29 @@ import java.util.List;
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper
  */
 public class MultipleItem implements MultiItemEntity {
-    public static final int          PICTURE      = 1;
-    public static final int          LINK         = 2;
-    public static final int          TEXT         = 3;
-    public static final int          LINK_SIZE    = 1;
-    public static final int          PICTURE_SIZE = 1;
-    public static final int          TEXT_SIZE    = 1;
-    private             int          itemType;
-    private             int          spanSize;
-    private             String       title;
-    private             String       content;
-    private             List<String> mSystemPhotoList;
-    private             long         time;
-    private             int          joinNumbers;
+    public static final int              PICTURE      = 1;
+    public static final int              LINK         = 2;
+    public static final int              TEXT         = 3;
+    public static final int              LINK_SIZE    = 1;
+    public static final int              PICTURE_SIZE = 1;
+    public static final int              TEXT_SIZE    = 1;
+    private             int              itemType;
+    private             int              spanSize;
+    private             String           title;
+    private             String           content;
+    private             List<String>     mSystemPhotoList;
+    private             List<LinkEntity> mLinkList;
+    private             long             time;
+    private             int              joinNumbers;
+
+    public List<LinkEntity> getLinkList() {
+        return mLinkList;
+    }
+
+    public void setLinkList(List<LinkEntity> linkList) {
+        mLinkList = linkList;
+    }
+
 
     public void setItemType(int itemType) {
         this.itemType = itemType;
@@ -62,6 +72,7 @@ public class MultipleItem implements MultiItemEntity {
         this.spanSize = spanSize;
         this.mSystemPhotoList = systemPhotoList;
     }
+
 
     public MultipleItem(int itemType, int spanSize) {
         this.itemType = itemType;

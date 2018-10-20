@@ -6,12 +6,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.xingguang.www.xinguang.Fragment.BaseFragment;
 import com.xingguang.www.xinguang.Fragment.CreateFragment;
 import com.xingguang.www.xinguang.Fragment.DetailFragment;
 import com.xingguang.www.xinguang.R;
 import com.xingguang.www.xinguang.base.CameraRefreshInterface;
+import com.xingguang.www.xinguang.base.Html5Interface;
 import com.xingguang.www.xinguang.base.JumpInterface;
 import com.xingguang.www.xinguang.util.AppFileHelper;
 import com.xingguang.www.xinguang.util.PhotoHelper;
@@ -22,8 +24,6 @@ public class MainActivity extends BaseActivity implements JumpInterface {
 
     private static final String         TAG = "MainActivity";
     private              BaseFragment   mCreatelanFragment;
-    private              DetailFragment mTargetFragment;
-    private              Fragment       mCurrentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,21 +38,32 @@ public class MainActivity extends BaseActivity implements JumpInterface {
 
     @Override
     public void jumpFragment(Fragment toFragment) {
-        mCurrentFragment = toFragment;
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         //        fragmentTransaction.setCustomAnimations(R.anim.h_fragment_enter,R.anim.h_fragment_exit);
         fragmentTransaction.replace(R.id.fl_container, toFragment).addToBackStack(null).commit();
     }
 
+
     @Override
-    public void onBackPressed() {
-        if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-            //            pop
-            super.onBackPressed();
-        } else {
-            finish();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+                //            pop
+                BaseFragment activeFragment = getActiveFragment(getSupportFragmentManager());
+                if (activeFragment instanceof Html5Interface) {
+                    if (((Html5Interface) activeFragment).onKeyDown(KeyEvent.KEYCODE_BACK, event)) {
+                        return true;
+                    } else {
+                        super.onKeyDown(keyCode, event);
+                    }
+                }
+            } else {
+                finish();
+            }
         }
+        return super.onKeyDown(keyCode, event);
+
     }
 
     @Override
@@ -62,8 +73,9 @@ public class MainActivity extends BaseActivity implements JumpInterface {
             @Override
             public void onFinish(String filePath) {
                 Log.i(TAG, "filePath:" + filePath);
-                if (mCurrentFragment instanceof CameraRefreshInterface) {
-                    ((CameraRefreshInterface) mCurrentFragment).refreshPictureData(filePath);
+                BaseFragment activeFragment = getActiveFragment(getSupportFragmentManager());
+                if (activeFragment instanceof CameraRefreshInterface) {
+                    ((CameraRefreshInterface) activeFragment).refreshPictureData(filePath);
                 }
             }
 
@@ -81,23 +93,21 @@ public class MainActivity extends BaseActivity implements JumpInterface {
 
     }
 
+
     /**
      * 从栈顶开始查找,状态为show & userVisible的Fragment
      */
-    BaseFragment getActiveFragment(BaseFragment parentFragment, FragmentManager fragmentManager) {
+    BaseFragment getActiveFragment(FragmentManager fragmentManager) {
         List<Fragment> fragmentList = fragmentManager.getFragments();
-        if (fragmentList == null) {
-            return parentFragment;
-        }
         for (int i = fragmentList.size() - 1; i >= 0; i--) {
             Fragment fragment = fragmentList.get(i);
             if (fragment instanceof BaseFragment) {
                 BaseFragment baseFragment = (BaseFragment) fragment;
                 if (baseFragment.isResumed() && !baseFragment.isHidden() && baseFragment.getUserVisibleHint()) {
-                    return getActiveFragment(baseFragment, baseFragment.getChildFragmentManager());
+                    return getActiveFragment(baseFragment.getChildFragmentManager());
                 }
             }
         }
-        return parentFragment;
+        return null;
     }
 }

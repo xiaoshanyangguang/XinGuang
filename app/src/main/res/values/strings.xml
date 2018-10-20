@@ -12,6 +12,7 @@
     <string name="title_create_plan5">参与人数:98</string>
     <string name="my_plan">我的计划</string>
     <string name="picture">图片</string>
+    <string name="link">链接</string>
     <string name="question">如何解决ScrollView嵌套RecyclerView的显示不全及滑动？</string>
     <string name="recommend_plan">推荐计划</string>
 </resources>

@@ -3,14 +3,17 @@ package com.xingguang.www.xinguang.datamanager;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.xingguang.www.xinguang.activity.BaseAppliCation;
 import com.xingguang.www.xinguang.entity.CreateFragmentBean;
 import com.xingguang.www.xinguang.entity.CreateFragmentItemEntity;
 import com.xingguang.www.xinguang.entity.DetailFragmentItemEntity;
 import com.xingguang.www.xinguang.entity.DetailSection;
+import com.xingguang.www.xinguang.entity.LinkEntity;
 import com.xingguang.www.xinguang.entity.MultipleItem;
 import com.xingguang.www.xinguang.entity.MySection;
 import com.xingguang.www.xinguang.util.CommonUtil;
+import com.xingguang.www.xinguang.util.SpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,15 +38,33 @@ public class DataImpl {
         return new Gson().fromJson(json, CreateFragmentBean.class);
     }
 
-    public static List<MultipleItem> getMultipleItemData(List<String> systemPhotoList) {
+    public static List<MultipleItem> getMultipleItemData() {
         List<MultipleItem> list = new ArrayList<>();
-        list.add(new MultipleItem(MultipleItem.PICTURE, MultipleItem.PICTURE_SIZE, systemPhotoList));
-        list.add(new MultipleItem(MultipleItem.LINK, MultipleItem.LINK_SIZE));
+        list.add(new MultipleItem(MultipleItem.PICTURE, MultipleItem.PICTURE_SIZE, CommonUtil.getAppPhotoList()));
+        MultipleItem multipleItem = new MultipleItem(MultipleItem.LINK, MultipleItem.LINK_SIZE);
+        multipleItem.setLinkList(getSampleLinkEntity());
+        list.add(multipleItem);
         list.add(new MultipleItem(MultipleItem.TEXT, MultipleItem.TEXT_SIZE));
 
         return list;
     }
 
+    public static List<LinkEntity> getSampleLinkEntity() {
+        String gsonString = SpUtils.getInstance(SpUtils.HTMLWEBCHROMECLIENT).getString(SpUtils.HTMLWEBCHROMECLIENT);
+        Log.i(TAG, "gsonString:" + gsonString);
+//        List<LinkEntity> linkEntities = GsonUtil.GsonToList(gsonString, LinkEntity.class);
+        List<LinkEntity> linkEntities = new Gson().fromJson(gsonString, new TypeToken<List<LinkEntity>>() {
+        }.getType());
+        LinkEntity linkEntity = new LinkEntity();
+        linkEntity.setWebsite("https://www.baidu.com/");
+        linkEntity.setTitle("baiduyixia");
+        linkEntities.add(linkEntity);
+        for (int i = 0; i < linkEntities.size(); i++) {
+             Log.i(TAG,"-"+linkEntities.get(i).getTitle()+"--"+linkEntities.get(i).getWebsite());
+        }
+        Log.i(TAG, "gsonString2:" + linkEntities);
+        return linkEntities;
+    }
 
     public static List<MySection> getCreateSampleData() {
         List<MySection> list = new ArrayList<>();
@@ -64,6 +85,7 @@ public class DataImpl {
 
         return list;
     }
+
     //安卓权限
     public static List<DetailSection> getDetailSampleData() {
         List<DetailSection> list = new ArrayList<>();

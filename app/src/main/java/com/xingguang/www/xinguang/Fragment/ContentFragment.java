@@ -37,8 +37,7 @@ public class ContentFragment extends BaseFragment implements CameraRefreshInterf
     protected void initData(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         super.initData(inflater, container, savedInstanceState);
-        List<String> systemPhotoList = CommonUtil.getAppPhotoList();
-        mMultipleItems = DataImpl.getMultipleItemData(systemPhotoList);
+        mMultipleItems = DataImpl.getMultipleItemData();
     }
 
     public static ContentFragment newInstance(String id) {
