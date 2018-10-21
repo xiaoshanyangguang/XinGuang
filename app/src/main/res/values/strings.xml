@@ -15,4 +15,6 @@
     <string name="link">链接</string>
     <string name="question">如何解决ScrollView嵌套RecyclerView的显示不全及滑动？</string>
     <string name="recommend_plan">推荐计划</string>
+    <string name="colloect">收藏成功</string>
+    <string name="cancell_colloect">取消收藏</string>
 </resources>

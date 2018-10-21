@@ -407,7 +407,7 @@ public class CommonTitleBar extends RelativeLayout implements View.OnClickListen
             btnRight.setId(AppUtils.generateViewId());
             btnRight.setImageResource(rightImageResource);
             btnRight.setBackgroundColor(Color.TRANSPARENT);
-            btnRight.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            btnRight.setScaleType(ImageView.ScaleType.FIT_CENTER);
 //            btnRight.setPadding(PADDING_12, 0, PADDING_12, 0);
             btnRight.setOnClickListener(this);
             rightInnerParams.width = titleBarHeight;

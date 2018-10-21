@@ -7,13 +7,6 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <SeekBar
-        android:id="@+id/web_sbr"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:focusable="false"
-        android:progressDrawable="@drawable/po_seekbar"
-        android:thumb="@null"/>
 
     <com.wuhenzhizao.titlebar.widget.CommonTitleBar
         android:id="@+id/titlebar"
@@ -21,8 +14,18 @@
         android:layout_height="wrap_content"
         titlebar:centerText="@string/my_plan"
         titlebar:centerType="textView"
+        titlebar:rightImageResource="@drawable/rating_small_empty"
+        titlebar:rightType="imageButton"
         titlebar:statusBarColor="@color/color_title"
         titlebar:titleBarColor="@color/color_title"/>
+
+    <SeekBar
+        android:id="@+id/web_sbr"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:focusable="false"
+        android:progressDrawable="@drawable/po_seekbar"
+        android:thumb="@null"/>
 
     <FrameLayout
         android:id="@+id/web_layout"

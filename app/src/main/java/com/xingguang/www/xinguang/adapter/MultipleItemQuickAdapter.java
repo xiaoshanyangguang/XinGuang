@@ -176,8 +176,7 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<Multiple
                 @Override
                 public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                     if (mContext instanceof JumpInterface) {
-                        Html5Fragment targetFragment = Html5Fragment.newInstance(linkEntities.get(position)
-                                .getWebsite());
+                        Html5Fragment targetFragment = Html5Fragment.newInstance(linkEntities.get(position));
                         Log.i(TAG, "--" + linkEntities.get(position)
                                 .getWebsite());
                         ((JumpInterface) mContext).jumpFragment(targetFragment);

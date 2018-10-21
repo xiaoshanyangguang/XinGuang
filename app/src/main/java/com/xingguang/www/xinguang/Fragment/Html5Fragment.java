@@ -3,6 +3,7 @@ package com.xingguang.www.xinguang.Fragment;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -19,23 +21,34 @@ import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 import com.xingguang.www.xinguang.R;
 import com.xingguang.www.xinguang.activity.BaseAppliCation;
 import com.xingguang.www.xinguang.base.Html5Interface;
+import com.xingguang.www.xinguang.entity.LinkEntity;
 import com.xingguang.www.xinguang.util.CommonUtil;
+import com.xingguang.www.xinguang.util.GsonUtil;
+import com.xingguang.www.xinguang.util.SpUtils;
+import com.xingguang.www.xinguang.util.ToastUtils;
 import com.xingguang.www.xinguang.view.Html5WebView;
 import com.xingguang.www.xinguang.view.HtmlWebChromeClient;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.xingguang.www.xinguang.util.SpUtils.HTMLWEBCHROMECLIENT;
+
 public class Html5Fragment extends BaseFragment implements Html5Interface {
-    private static final String URL = "URL";
+    private static final String HTML5_ENTITY = "html5_entity";
+    private static final String URL          = "URL";
     private              String mUrl;
 
     private FrameLayout    mLayout;
     private CommonTitleBar mCommonTitleBar;
     private SeekBar        mSeekBar;
     private Html5WebView   mWebView;
+    private LinkEntity     mLinkEntity;
 
 
-    public static Html5Fragment newInstance(String url) {
+    public static Html5Fragment newInstance(LinkEntity linkEntity) {
         Bundle bundle = new Bundle();
-        bundle.putString(URL, url);
+        bundle.putParcelable(HTML5_ENTITY, linkEntity);
         Html5Fragment fragment = new Html5Fragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -46,7 +59,8 @@ public class Html5Fragment extends BaseFragment implements Html5Interface {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
-        mUrl = arguments.getString(URL);
+        mLinkEntity = arguments.getParcelable(HTML5_ENTITY);
+        mUrl = mLinkEntity.getWebsite();
         CommonUtil.verifyStoragePermissions((Activity) mContext);
         Log.i(TAG, "mString" + mUrl);
     }
@@ -64,22 +78,58 @@ public class Html5Fragment extends BaseFragment implements Html5Interface {
         mLayout = inflate.findViewById(R.id.web_layout);
         mCommonTitleBar = inflate.findViewById(R.id.titlebar);
         mSeekBar = inflate.findViewById(R.id.web_sbr);
+        final ImageButton rightImageButton = mCommonTitleBar.getRightImageButton();
+
         // 创建 WebView
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
         mWebView = new Html5WebView(BaseAppliCation.getInstance());
         mWebView.setLayoutParams(params);
         mLayout.addView(mWebView);
-        mWebView.setWebChromeClient(new Html5WebChromeClient(mUrl, mCommonTitleBar.getCenterTextView()));
+        final Html5WebChromeClient html5WebChromeClient = new Html5WebChromeClient(mUrl, mCommonTitleBar.getCenterTextView());
+        mWebView.setWebChromeClient(html5WebChromeClient);
         mWebView.loadUrl(mUrl);
+        rightImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mLinkEntity.isCollection()) {
+                    rightImageButton.setImageResource(R.drawable.rating_small_empty);
+                    ToastUtils.showLongToast(R.string.cancell_colloect);
+                } else {
+                    rightImageButton.setImageResource(R.drawable.rating_small_full);
+                    ToastUtils.showLongToast(R.string.colloect);
+                }
+                mLinkEntity.setCollection(!mLinkEntity.isCollection());
 
+              //存储
+                List<LinkEntity> mLinkEntities1;
+                String gsonString = SpUtils.getInstance(HTMLWEBCHROMECLIENT).getString(HTMLWEBCHROMECLIENT);
+                if (TextUtils.isEmpty(gsonString)) {
+                    mLinkEntities1 = new ArrayList<>();
+                } else {
+                    mLinkEntities1 = GsonUtil.GsonToList(gsonString, LinkEntity.class);
+                }
+                LinkEntity linkEntity = new LinkEntity();
+                linkEntity.setTitle(html5WebChromeClient.getTitle());
+                linkEntity.setWebsite(mUrl);
+                mLinkEntities1.add(0, linkEntity);
+                String newString = GsonUtil.GsonString(mLinkEntities1);
+                SpUtils.getInstance(HTMLWEBCHROMECLIENT).put(HTMLWEBCHROMECLIENT, newString);
+                Log.i(TAG, "newString:" + newString);
+
+
+
+
+
+            }
+        });
         return inflate;
     }
 
     // 继承 WebView 里面实现的基类
     class Html5WebChromeClient extends HtmlWebChromeClient {
 
-        public Html5WebChromeClient(String url,TextView title) {
+        public Html5WebChromeClient(String url, TextView title) {
             super(url, title);
         }
 

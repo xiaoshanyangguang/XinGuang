@@ -16,6 +16,7 @@ import com.xingguang.www.xinguang.R;
 import com.xingguang.www.xinguang.base.CameraRefreshInterface;
 import com.xingguang.www.xinguang.base.Html5Interface;
 import com.xingguang.www.xinguang.base.JumpInterface;
+import com.xingguang.www.xinguang.entity.LinkEntity;
 import com.xingguang.www.xinguang.util.AppFileHelper;
 import com.xingguang.www.xinguang.util.PhotoHelper;
 
@@ -43,7 +44,9 @@ public class MainActivity extends BaseActivity implements JumpInterface {
             mCreatelanFragment.setIsRoot(true);
             jumpFragment(mCreatelanFragment);
             if (!TextUtils.isEmpty(mHtml5UriString)) {
-                jumpFragment(Html5Fragment.newInstance(mHtml5UriString));
+                LinkEntity linkEntity = new LinkEntity();
+                linkEntity.setWebsite(mHtml5UriString);
+                jumpFragment(Html5Fragment.newInstance(linkEntity));
             }
         }
     }

@@ -58,10 +58,6 @@ public class DataImpl {
         if(null == linkEntities){
             linkEntities = new ArrayList<>();
         }
-        LinkEntity linkEntity = new LinkEntity();
-        linkEntity.setWebsite("https://www.baidu.com/");
-        linkEntity.setTitle("baiduyixia");
-        linkEntities.add(linkEntity);
         for (int i = 0; i < linkEntities.size(); i++) {
              Log.i(TAG,"-"+linkEntities.get(i).getTitle()+"--"+linkEntities.get(i).getWebsite());
         }

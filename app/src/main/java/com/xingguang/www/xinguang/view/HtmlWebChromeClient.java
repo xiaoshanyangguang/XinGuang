@@ -21,11 +21,12 @@ import static com.xingguang.www.xinguang.util.SpUtils.HTMLWEBCHROMECLIENT;
  * @描述 TODO
  */
 public class HtmlWebChromeClient extends Html5WebView.BaseWebChromeClient {
-    private static final String    TAG = "HtmlWebChromeClient";
-    private              String    mUrl;
-    private              TextView  mTextView;
+    private static final String   TAG = "HtmlWebChromeClient";
+    private              String   mUrl;
+    private              TextView mTextView;
+    private              String   mTitle;
 
-    public HtmlWebChromeClient(String url,  TextView titleTextView) {
+    public HtmlWebChromeClient(String url, TextView titleTextView) {
         mUrl = url;
         mTextView = titleTextView;
     }
@@ -33,25 +34,14 @@ public class HtmlWebChromeClient extends Html5WebView.BaseWebChromeClient {
     @Override
     public void onReceivedTitle(WebView view, String title) {
         super.onReceivedTitle(view, title);
+        mTitle = title;
         mTextView.setText(title);
-        List<LinkEntity> mLinkEntities1;
-        String gsonString = SpUtils.getInstance(HTMLWEBCHROMECLIENT).getString(HTMLWEBCHROMECLIENT);
 
-
-        if (TextUtils.isEmpty(gsonString)) {
-            mLinkEntities1 = new ArrayList<>();
-        } else {
-            mLinkEntities1 = GsonUtil.GsonToList(gsonString, LinkEntity.class);
-        }
-        LinkEntity linkEntity = new LinkEntity();
-        linkEntity.setTitle(title);
-        linkEntity.setWebsite(mUrl);
-        mLinkEntities1.add(0, linkEntity);
-        String newString = GsonUtil.GsonString(mLinkEntities1);
-        SpUtils.getInstance(HTMLWEBCHROMECLIENT).put(HTMLWEBCHROMECLIENT, newString);
-        Log.i(TAG, "newString:" + newString);
     }
 
+    public String getTitle() {
+        return mTitle;
+    }
 
     @Override
     public void onReceivedIcon(WebView view, Bitmap icon) {
