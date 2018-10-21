@@ -4,19 +4,36 @@
               android:layout_height="wrap_content"
               android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_40"
-        android:layout_marginStart="@dimen/dp_16"
-        android:textColor="@color/black"
-        android:gravity="center_vertical"
-        android:textSize="@dimen/dp_16"
-        android:text="@string/picture"/>
+    <RelativeLayout
+        android:id="@+id/rl_picture"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:background="@color/black_05"
+        android:paddingEnd="@dimen/dp_16"
+        android:paddingStart="@dimen/dp_16">
+
+        <TextView
+            android:id="@+id/tv_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/picture"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dp_16"/>
+
+        <ImageView
+            android:id="@+id/iv_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_listcontorl_up_48dp"/>
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview_picture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_16"
-        android:layout_marginEnd="@dimen/dp_16"/>
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginStart="@dimen/dp_16"/>
 </LinearLayout>

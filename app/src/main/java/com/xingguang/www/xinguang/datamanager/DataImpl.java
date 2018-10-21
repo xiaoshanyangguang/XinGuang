@@ -55,6 +55,9 @@ public class DataImpl {
 //        List<LinkEntity> linkEntities = GsonUtil.GsonToList(gsonString, LinkEntity.class);
         List<LinkEntity> linkEntities = new Gson().fromJson(gsonString, new TypeToken<List<LinkEntity>>() {
         }.getType());
+        if(null == linkEntities){
+            linkEntities = new ArrayList<>();
+        }
         LinkEntity linkEntity = new LinkEntity();
         linkEntity.setWebsite("https://www.baidu.com/");
         linkEntity.setTitle("baiduyixia");

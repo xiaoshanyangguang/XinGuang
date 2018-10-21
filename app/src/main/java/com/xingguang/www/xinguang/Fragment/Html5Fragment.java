@@ -79,7 +79,7 @@ public class Html5Fragment extends BaseFragment implements Html5Interface {
     // 继承 WebView 里面实现的基类
     class Html5WebChromeClient extends HtmlWebChromeClient {
 
-        public Html5WebChromeClient(String url, TextView title) {
+        public Html5WebChromeClient(String url,TextView title) {
             super(url, title);
         }
 

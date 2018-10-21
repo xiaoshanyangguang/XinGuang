@@ -5,12 +5,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 
 import com.xingguang.www.xinguang.Fragment.BaseFragment;
 import com.xingguang.www.xinguang.Fragment.CreateFragment;
-import com.xingguang.www.xinguang.Fragment.DetailFragment;
+import com.xingguang.www.xinguang.Fragment.Html5Fragment;
 import com.xingguang.www.xinguang.R;
 import com.xingguang.www.xinguang.base.CameraRefreshInterface;
 import com.xingguang.www.xinguang.base.Html5Interface;
@@ -22,17 +23,28 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements JumpInterface {
 
-    private static final String         TAG = "MainActivity";
-    private              BaseFragment   mCreatelanFragment;
+    private static final String       TAG = "MainActivity";
+    private              BaseFragment mCreatelanFragment;
+    private              String       mHtml5UriString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        Log.i(TAG, "getIntent().getData():" + getIntent().getDataString() + "--:intent:" + intent);
+        if (null != intent) {
+            if (intent.getAction().equals(Intent.ACTION_VIEW)) {
+                mHtml5UriString = intent.getDataString();
+            }
+        }
         if (null == savedInstanceState) {
             mCreatelanFragment = CreateFragment.newInstance();
             mCreatelanFragment.setIsRoot(true);
             jumpFragment(mCreatelanFragment);
+            if (!TextUtils.isEmpty(mHtml5UriString)) {
+                jumpFragment(Html5Fragment.newInstance(mHtml5UriString));
+            }
         }
     }
 
@@ -50,7 +62,7 @@ public class MainActivity extends BaseActivity implements JumpInterface {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
                 //            pop
-                BaseFragment activeFragment = getActiveFragment(getSupportFragmentManager());
+                Fragment activeFragment = getVisibleFragment();
                 if (activeFragment instanceof Html5Interface) {
                     if (((Html5Interface) activeFragment).onKeyDown(KeyEvent.KEYCODE_BACK, event)) {
                         return true;
@@ -72,8 +84,8 @@ public class MainActivity extends BaseActivity implements JumpInterface {
         PhotoHelper.handleActivityResult(this, requestCode, resultCode, data, new PhotoHelper.PhotoCallback() {
             @Override
             public void onFinish(String filePath) {
-                Log.i(TAG, "filePath:" + filePath);
-                BaseFragment activeFragment = getActiveFragment(getSupportFragmentManager());
+                Fragment activeFragment = getVisibleFragment();
+                Log.i(TAG, "filePath:" + filePath + "--activeFragment:" + activeFragment);
                 if (activeFragment instanceof CameraRefreshInterface) {
                     ((CameraRefreshInterface) activeFragment).refreshPictureData(filePath);
                 }
@@ -94,19 +106,12 @@ public class MainActivity extends BaseActivity implements JumpInterface {
     }
 
 
-    /**
-     * 从栈顶开始查找,状态为show & userVisible的Fragment
-     */
-    BaseFragment getActiveFragment(FragmentManager fragmentManager) {
-        List<Fragment> fragmentList = fragmentManager.getFragments();
-        for (int i = fragmentList.size() - 1; i >= 0; i--) {
-            Fragment fragment = fragmentList.get(i);
-            if (fragment instanceof BaseFragment) {
-                BaseFragment baseFragment = (BaseFragment) fragment;
-                if (baseFragment.isResumed() && !baseFragment.isHidden() && baseFragment.getUserVisibleHint()) {
-                    return getActiveFragment(baseFragment.getChildFragmentManager());
-                }
-            }
+    public Fragment getVisibleFragment() {
+        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment != null && fragment.isVisible())
+                return fragment;
         }
         return null;
     }

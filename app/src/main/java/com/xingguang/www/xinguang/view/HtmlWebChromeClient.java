@@ -1,5 +1,6 @@
 package com.xingguang.www.xinguang.view;
 
+import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.WebView;
@@ -20,11 +21,11 @@ import static com.xingguang.www.xinguang.util.SpUtils.HTMLWEBCHROMECLIENT;
  * @描述 TODO
  */
 public class HtmlWebChromeClient extends Html5WebView.BaseWebChromeClient {
-    private static final String   TAG                 = "HtmlWebChromeClient";
-    private              String   mUrl;
-    private              TextView mTextView;
+    private static final String    TAG = "HtmlWebChromeClient";
+    private              String    mUrl;
+    private              TextView  mTextView;
 
-    public HtmlWebChromeClient(String url, TextView titleTextView) {
+    public HtmlWebChromeClient(String url,  TextView titleTextView) {
         mUrl = url;
         mTextView = titleTextView;
     }
@@ -49,7 +50,11 @@ public class HtmlWebChromeClient extends Html5WebView.BaseWebChromeClient {
         String newString = GsonUtil.GsonString(mLinkEntities1);
         SpUtils.getInstance(HTMLWEBCHROMECLIENT).put(HTMLWEBCHROMECLIENT, newString);
         Log.i(TAG, "newString:" + newString);
-
     }
 
+
+    @Override
+    public void onReceivedIcon(WebView view, Bitmap icon) {
+        super.onReceivedIcon(view, icon);
+    }
 }
