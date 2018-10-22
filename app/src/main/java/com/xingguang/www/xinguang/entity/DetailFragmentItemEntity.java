@@ -6,8 +6,26 @@ package com.xingguang.www.xinguang.entity;
  * @描述 TODO
  */
 public class DetailFragmentItemEntity {
+    public String planId;
+    public long   createTime;
     public String id;
     public String content;
+
+    public String getPlanId() {
+        return planId;
+    }
+
+    public void setPlanId(String planId) {
+        this.planId = planId;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
 
     public String getId() {
         return id;

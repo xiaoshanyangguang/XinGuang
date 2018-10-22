@@ -26,11 +26,14 @@ public class PictureAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
     public static final  int     CRITICAL_SIZE = 2 * 4;//3行4列
     private              Context mContext;
     private              boolean mIsOpen       = false;
+    private              String  mPlanContentPicId;
 
-    public PictureAdapter(Context context, List<String> systemPhotoList) {
+    public PictureAdapter(Context context, List<String> systemPhotoList, String planContentPicId) {
         super(R.layout.item_inner_picture, systemPhotoList);
         mContext = context;
+        mPlanContentPicId = planContentPicId;
     }
+
 
     @Override
     protected void convert(BaseViewHolder holder, final String item) {
@@ -41,7 +44,7 @@ public class PictureAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        PhotoHelper.fromCamera(mContext);
+                        PhotoHelper.fromCamera(mPlanContentPicId, mContext);
                     }
                 });
                 break;
@@ -96,6 +99,6 @@ public class PictureAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
         Log.i(TAG, "notifyData(String filePath) " + filePath);
         mData.add(1, filePath);
         //        notifyItemInserted(1);
-        notifyItemRangeChanged(0,mData.size()-1);
+        notifyItemRangeChanged(0, mData.size() - 1);
     }
 }

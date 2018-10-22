@@ -27,7 +27,8 @@ import java.util.List;
  * @描述 TODO
  */
 public class ContentFragment extends BaseFragment implements CameraRefreshInterface {
-    private static final String ID = "id";
+    private static final String                  TAG                  = ContentFragment.class.getName();
+    private static final String PLAN_CONTENT_PIC_ID = "id";
     private              String mString;
 
     private List<MultipleItem> mMultipleItems;
@@ -37,7 +38,7 @@ public class ContentFragment extends BaseFragment implements CameraRefreshInterf
     protected void initData(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         super.initData(inflater, container, savedInstanceState);
-        mMultipleItems = DataImpl.getMultipleItemData();
+        mMultipleItems = DataImpl.getMultipleItemData(mString);
     }
 
     public static ContentFragment newInstance(String id) {
@@ -53,7 +54,7 @@ public class ContentFragment extends BaseFragment implements CameraRefreshInterf
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
-        mString = arguments.getString(ID);
+        mString = arguments.getString(PLAN_CONTENT_PIC_ID);
         CommonUtil.verifyStoragePermissions((Activity)mContext);
         Log.i(TAG, "mString" + mString);
     }
@@ -65,7 +66,7 @@ public class ContentFragment extends BaseFragment implements CameraRefreshInterf
         CommonTitleBar commonTitleBar = inflate.findViewById(R.id.titlebar);
         RecyclerView recyclerView = inflate.findViewById(R.id.recyclerview_content);
         commonTitleBar.setTitle(mString);
-        mMultipleItemQuickAdapter = new MultipleItemQuickAdapter(mContext, mMultipleItems);
+        mMultipleItemQuickAdapter = new MultipleItemQuickAdapter(mContext, mMultipleItems,mString);
         //        BaseQuickAdapter baseQuickAdapter = initAdapter(sectionAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(mContext, 1));
         recyclerView.setAdapter(mMultipleItemQuickAdapter);

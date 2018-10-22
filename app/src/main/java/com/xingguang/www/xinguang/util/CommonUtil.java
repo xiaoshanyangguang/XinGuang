@@ -126,17 +126,23 @@ public class CommonUtil {
         return getFilesAllName(appPicPath);
     }
 
+    public static List<String> getAppContentPhotoList(String appPicPath) {
+        //        String appPicPath = AppFileHelper.toPlanContentId(createTime, planId, ContentId);
+        Log.i(TAG, "appPicPath" + appPicPath);
+        return getFilesAllName(AppFileHelper.getPlanCameraPicFileDirById(appPicPath));
+    }
+
     public static List<String> getFilesAllName(String path) {
+        List<String> s = new ArrayList<>();
         File file = new File(path);
         File[] files = file.listFiles();
-        if (files == null) {
+        if (files != null) {
+            for (int i = files.length - 1; i >= 0; i--) {
+                Log.i(TAG, "files[i].getAbsolutePath(" + files[i].getAbsolutePath());
+                s.add(files[i].getAbsolutePath());
+            }
+        } else {
             Log.e("error", "空目录");
-            return null;
-        }
-        List<String> s = new ArrayList<>();
-        for (int i = files.length - 1; i >= 0; i--) {
-            Log.i(TAG, "files[i].getAbsolutePath(" + files[i].getAbsolutePath());
-            s.add(files[i].getAbsolutePath());
         }
         return s;
     }

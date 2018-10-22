@@ -20,30 +20,31 @@ import java.util.Locale;
 
 /**
  * Created by 大灯泡 on 2017/3/23.
- *
+ * <p>
  * https://github.com/razerdp/FriendCircle
  * <p>
  * app文件helper，针对7.0，需要留意path与filepaths一致
  */
 
 public class AppFileHelper {
-    private static boolean OVERM = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-    private static final String TAG = "AppFileHelper";
+    private static       boolean OVERM = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    private static final String  TAG   = "AppFileHelper";
 
     public static final String[] INTERNAL_STORAGE_PATHS = new String[]{"/mnt/", "/emmc/"};
-    public static final String ROOT_PATH = "com/xinguang/";
-    public static final String DATA_PATH = ROOT_PATH + "data/";
-    public static final String CACHE_PATH = ROOT_PATH + "cache/";
-    public static final String PIC_PATH = ROOT_PATH + "pic/";
-    public static final String CAMERA_PATH = ROOT_PATH + "pic/camera/";
-    public static final String LOG_PATH = ROOT_PATH + "log/";
-    public static final String DOWNLOAD_PATH = ROOT_PATH + "download/";
-    public static final String TEMP_PATH = ROOT_PATH + "temp/";
+    public static final String   ROOT_PATH              = "com/xinguang/";
+    public static final String   DATA_PATH              = ROOT_PATH + "data/";
+    public static final String   CACHE_PATH             = ROOT_PATH + "cache/";
+    public static final String   PIC_PATH               = ROOT_PATH + "pic/";
+    public static final String   CAMERA_PATH            = ROOT_PATH + "pic/camera/";
+    public static final String   LOG_PATH               = ROOT_PATH + "log/";
+    public static final String   DOWNLOAD_PATH          = ROOT_PATH + "download/";
+    public static final String   TEMP_PATH              = ROOT_PATH + "temp/";
 
     private static String storagePath;
 
     public static void initStroagePath(Activity activity) {
-        if (!TextUtils.isEmpty(storagePath)) return;
+        if (!TextUtils.isEmpty(storagePath))
+            return;
         if (OVERM) {
             if (activity instanceof BaseActivity) {
                 ((BaseActivity) activity).getPermissionHelper().requestPermission(new OnPermissionGrantListener() {
@@ -56,7 +57,8 @@ public class AppFileHelper {
                     public void onPermissionsDenied(PermissionHelper.Permission... deniedPermissions) {
 
                     }
-                }, PermissionHelper.Permission.WRITE_EXTERNAL_STORAGE, PermissionHelper.Permission.READ_EXTERNAL_STORAGE);
+                }, PermissionHelper.Permission.WRITE_EXTERNAL_STORAGE, PermissionHelper.Permission
+                        .READ_EXTERNAL_STORAGE);
             } else {
                 int permission1 = ActivityCompat.checkSelfPermission(activity,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -170,6 +172,30 @@ public class AppFileHelper {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyyMMdd_HHmmss", Locale.US);
         return dateFormat.format(date) + (isJpg ? ".jpg" : ".png");
+    }
+
+
+
+
+    public static void createPlanContentFileDir(long createTime, String planId, String contentId) {
+        File dataDir = new File(getPlanContentFileDir(createTime, planId, contentId));
+        Log.i(TAG, "--:" + getPlanContentFileDir(createTime, planId, contentId));
+        checkAndMakeDir(dataDir);
+    }
+
+    public static String getPlanContentFileDir(long createTime, String planId, String ContentId) {
+        return getCameraPath().concat(getPlanContentId(createTime, planId, ContentId) + File.separator);
+    }
+
+    public static String getPlanCameraPicFileDirById(String planContentId) {
+        return getCameraPath().concat(planContentId + File.separator);
+    }
+
+    public static String getPlanContentId(long createTime, String planId, String ContentId) {
+        Date date = new Date(createTime);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyyMMdd", Locale.US);
+        return dateFormat.format(date) + "_" + planId + "_" + ContentId;
     }
 
     public static String createCropImageName() {

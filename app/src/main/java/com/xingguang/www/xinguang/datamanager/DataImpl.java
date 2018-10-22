@@ -12,6 +12,7 @@ import com.xingguang.www.xinguang.entity.DetailSection;
 import com.xingguang.www.xinguang.entity.LinkEntity;
 import com.xingguang.www.xinguang.entity.MultipleItem;
 import com.xingguang.www.xinguang.entity.MySection;
+import com.xingguang.www.xinguang.util.AppFileHelper;
 import com.xingguang.www.xinguang.util.CommonUtil;
 import com.xingguang.www.xinguang.util.SpUtils;
 
@@ -38,9 +39,11 @@ public class DataImpl {
         return new Gson().fromJson(json, CreateFragmentBean.class);
     }
 
-    public static List<MultipleItem> getMultipleItemData() {
+    public static List<MultipleItem> getMultipleItemData(String appPicPath) {
         List<MultipleItem> list = new ArrayList<>();
-        list.add(new MultipleItem(MultipleItem.PICTURE, MultipleItem.PICTURE_SIZE, CommonUtil.getAppPhotoList()));
+
+        list.add(new MultipleItem(MultipleItem.PICTURE, MultipleItem.PICTURE_SIZE, CommonUtil.getAppContentPhotoList
+                (appPicPath)));
         MultipleItem multipleItem = new MultipleItem(MultipleItem.LINK, MultipleItem.LINK_SIZE);
         multipleItem.setLinkList(getSampleLinkEntity());
         list.add(multipleItem);
@@ -52,14 +55,14 @@ public class DataImpl {
     public static List<LinkEntity> getSampleLinkEntity() {
         String gsonString = SpUtils.getInstance(SpUtils.HTMLWEBCHROMECLIENT).getString(SpUtils.HTMLWEBCHROMECLIENT);
         Log.i(TAG, "gsonString:" + gsonString);
-//        List<LinkEntity> linkEntities = GsonUtil.GsonToList(gsonString, LinkEntity.class);
+        //        List<LinkEntity> linkEntities = GsonUtil.GsonToList(gsonString, LinkEntity.class);
         List<LinkEntity> linkEntities = new Gson().fromJson(gsonString, new TypeToken<List<LinkEntity>>() {
         }.getType());
-        if(null == linkEntities){
+        if (null == linkEntities) {
             linkEntities = new ArrayList<>();
         }
         for (int i = 0; i < linkEntities.size(); i++) {
-             Log.i(TAG,"-"+linkEntities.get(i).getTitle()+"--"+linkEntities.get(i).getWebsite());
+            Log.i(TAG, "-" + linkEntities.get(i).getTitle() + "--" + linkEntities.get(i).getWebsite());
         }
         Log.i(TAG, "gsonString2:" + linkEntities);
         return linkEntities;
@@ -85,32 +88,53 @@ public class DataImpl {
         return list;
     }
 
-    //安卓权限
     public static List<DetailSection> getDetailSampleData() {
+
+
         List<DetailSection> list = new ArrayList<>();
         list.add(new DetailSection(true, "内容", true));
         DetailFragmentItemEntity createFragmentItemEntity1 = new DetailFragmentItemEntity();
-        createFragmentItemEntity1.setId("");
+        createFragmentItemEntity1.setId("01");
+        createFragmentItemEntity1.setPlanId("plan_01");
+        createFragmentItemEntity1.setCreateTime(1540177773000l);
         createFragmentItemEntity1.setContent("1.UI框架(点击进入具体的知识点,采用图片，链接，文字的形式))");
         list.add(new DetailSection(createFragmentItemEntity1));
 
         DetailFragmentItemEntity createFragmentItemEntity2 = new DetailFragmentItemEntity();
-        createFragmentItemEntity2.setId("");
+        createFragmentItemEntity2.setId("02");
+        createFragmentItemEntity2.setPlanId("plan_02");
         createFragmentItemEntity2.setContent("2.单activity多fragment");
+        createFragmentItemEntity2.setCreateTime(1540177773000l);
         list.add(new DetailSection(createFragmentItemEntity2));
 
 
         DetailFragmentItemEntity createFragmentItemEntity3 = new DetailFragmentItemEntity();
-        createFragmentItemEntity3.setId("");
+        createFragmentItemEntity3.setId("03");
+        createFragmentItemEntity3.setPlanId("plan_03");
         createFragmentItemEntity3.setContent("3.自定义控件");
+        createFragmentItemEntity3.setCreateTime(1540177773000l);
+
 
         list.add(new DetailSection(createFragmentItemEntity3));
 
 
         DetailFragmentItemEntity createFragmentItemEntity4 = new DetailFragmentItemEntity();
-        createFragmentItemEntity4.setId("");
+        createFragmentItemEntity4.setId("04");
+        createFragmentItemEntity4.setPlanId("plan_04");
         createFragmentItemEntity4.setContent("4.MVP架构");
+        createFragmentItemEntity4.setCreateTime(1540177773000l);
+
         list.add(new DetailSection(createFragmentItemEntity4));
+
+
+        AppFileHelper.createPlanContentFileDir(createFragmentItemEntity1.getCreateTime(),
+                createFragmentItemEntity1.getPlanId(), createFragmentItemEntity1.getId());
+        AppFileHelper.createPlanContentFileDir(createFragmentItemEntity2.getCreateTime(),
+                createFragmentItemEntity2.getPlanId(), createFragmentItemEntity2.getId());
+        AppFileHelper.createPlanContentFileDir(createFragmentItemEntity3.getCreateTime(),
+                createFragmentItemEntity3.getPlanId(), createFragmentItemEntity3.getId());
+        AppFileHelper.createPlanContentFileDir(createFragmentItemEntity4.getCreateTime(),
+                createFragmentItemEntity4.getPlanId(), createFragmentItemEntity4.getId());
 
 
         list.add(new DetailSection(true, "方法", true));

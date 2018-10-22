@@ -8,6 +8,7 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 
 import java.io.File;
 
@@ -20,6 +21,7 @@ import java.io.File;
 
 public class CompatHelper {
 
+    private static final String TAG = "CompatHelper";
     public static final String PROVIDER_AUTHER = "com.xinguang";
 
     public static Uri getUri(@NonNull File file) {
@@ -31,6 +33,7 @@ public class CompatHelper {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Log.i(TAG,""+e.getMessage());
             return null;
         }
     }

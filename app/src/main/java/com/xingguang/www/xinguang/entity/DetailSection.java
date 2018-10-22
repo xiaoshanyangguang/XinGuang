@@ -1,6 +1,7 @@
 package com.xingguang.www.xinguang.entity;
 
 import com.chad.library.adapter.base.entity.SectionEntity;
+import com.xingguang.www.xinguang.util.AppFileHelper;
 
 /**
  * @创建者 pengbo
@@ -9,6 +10,8 @@ import com.chad.library.adapter.base.entity.SectionEntity;
  */
 public class DetailSection extends SectionEntity<DetailFragmentItemEntity> {
     private boolean isMore;
+
+
     public DetailSection(boolean isHeader, String header, boolean isMroe) {
         super(isHeader, header);
         this.isMore = isMroe;
@@ -24,5 +27,10 @@ public class DetailSection extends SectionEntity<DetailFragmentItemEntity> {
 
     public void setMore(boolean mroe) {
         isMore = mroe;
+    }
+
+
+    public String toPlanContentId() {
+        return AppFileHelper.getPlanContentId(data.getCreateTime(), data.getPlanId(), data.id);
     }
 }

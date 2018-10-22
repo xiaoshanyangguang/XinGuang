@@ -39,8 +39,10 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<Multiple
     private ItemDragAdapter          mLinkAdapter;
     private ItemDragAndSwipeCallback mItemDragAndSwipeCallback;
     private ItemTouchHelper          mItemTouchHelper;
-    private boolean                  mIsOpenLink = true;
+    private boolean                  mIsOpenLink    = true;
     private boolean                  mIsOpenPicture = true;
+    private String                   mPlanContentPicId;
+
 
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with
@@ -48,12 +50,13 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<Multiple
      *
      * @param data A new list is created out of this one to avoid mutable list
      */
-    public MultipleItemQuickAdapter(Context context, List<MultipleItem> data) {
+    public MultipleItemQuickAdapter(Context context, List<MultipleItem> data, String planContentPicId) {
         super(data);
         addItemType(MultipleItem.PICTURE, R.layout.item_picture);
         addItemType(MultipleItem.LINK, R.layout.item_link);
         addItemType(MultipleItem.TEXT, R.layout.item_text);
         mContext = context;
+        mPlanContentPicId = planContentPicId;
     }
 
 
@@ -63,14 +66,14 @@ public class MultipleItemQuickAdapter extends BaseMultiItemQuickAdapter<Multiple
         if (item.getItemType() == MultipleItem.PICTURE) {
             RecyclerView recyclerView = helper.getView(R.id.recyclerview_picture);
             final ImageView iv_Arrow = helper.getView(R.id.iv_arrow);
-             RelativeLayout relativeLayout = helper.getView(R.id.rl_picture);
+            RelativeLayout relativeLayout = helper.getView(R.id.rl_picture);
             recyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
             //头加一个
             List<String> systemPhotoList = item.getSystemPhotoList();
             systemPhotoList.add(0, TAKE_PHOTO);
-            mPictureAdapter = new PictureAdapter(mContext, systemPhotoList);
+            mPictureAdapter = new PictureAdapter(mContext, systemPhotoList,mPlanContentPicId);
             mPictureAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-            if (!mPictureAdapter.isShouldOpenOrClose(systemPhotoList)){
+            if (!mPictureAdapter.isShouldOpenOrClose(systemPhotoList)) {
                 iv_Arrow.setVisibility(View.GONE);
             }
             relativeLayout.setOnClickListener(new View.OnClickListener() {

@@ -19,13 +19,13 @@
         titlebar:statusBarColor="@color/color_title"
         titlebar:titleBarColor="@color/color_title"/>
 
-    <SeekBar
-        android:id="@+id/web_sbr"
+    <ProgressBar
+        android:id="@+id/web_prog"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:focusable="false"
-        android:progressDrawable="@drawable/po_seekbar"
-        android:thumb="@null"/>
+        android:layout_height="1dp"
+        android:max="100"/>
+
 
     <FrameLayout
         android:id="@+id/web_layout"

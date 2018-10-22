@@ -14,9 +14,11 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 import com.xingguang.www.xinguang.R;
 import com.xingguang.www.xinguang.activity.BaseAppliCation;
@@ -39,11 +41,15 @@ public class Html5Fragment extends BaseFragment implements Html5Interface {
     private static final String URL          = "URL";
     private              String mUrl;
 
-    private FrameLayout    mLayout;
-    private CommonTitleBar mCommonTitleBar;
-    private SeekBar        mSeekBar;
-    private Html5WebView   mWebView;
-    private LinkEntity     mLinkEntity;
+    private FrameLayout      mLayout;
+    private CommonTitleBar   mCommonTitleBar;
+    private ProgressBar      mProgressBar;
+    private Html5WebView     mWebView;
+    private LinkEntity       mLinkEntity;
+    private String           mGsonString;
+    private List<LinkEntity> mLinkEntities1;
+    private boolean          mCollected;
+    private LinkEntity       mEntity;
 
 
     public static Html5Fragment newInstance(LinkEntity linkEntity) {
@@ -61,6 +67,16 @@ public class Html5Fragment extends BaseFragment implements Html5Interface {
         Bundle arguments = getArguments();
         mLinkEntity = arguments.getParcelable(HTML5_ENTITY);
         mUrl = mLinkEntity.getWebsite();
+        mGsonString = SpUtils.getInstance(HTMLWEBCHROMECLIENT).getString(HTMLWEBCHROMECLIENT);
+        if (TextUtils.isEmpty(mGsonString)) {
+            mLinkEntities1 = new ArrayList<>();
+        } else {
+            //                    mLinkEntities1 = GsonUtil.GsonToList(gsonString, LinkEntity.class);
+            mLinkEntities1 = new Gson().fromJson(mGsonString, new TypeToken<List<LinkEntity>>() {
+            }.getType());
+        }
+        mEntity = getCollected();
+        mCollected = isCollected(mEntity);
         CommonUtil.verifyStoragePermissions((Activity) mContext);
         Log.i(TAG, "mString" + mUrl);
     }
@@ -77,7 +93,7 @@ public class Html5Fragment extends BaseFragment implements Html5Interface {
         View inflate = inflater.inflate(R.layout.fragment_web, container, false);
         mLayout = inflate.findViewById(R.id.web_layout);
         mCommonTitleBar = inflate.findViewById(R.id.titlebar);
-        mSeekBar = inflate.findViewById(R.id.web_sbr);
+        mProgressBar = inflate.findViewById(R.id.web_prog);
         final ImageButton rightImageButton = mCommonTitleBar.getRightImageButton();
 
         // 创建 WebView
@@ -86,40 +102,36 @@ public class Html5Fragment extends BaseFragment implements Html5Interface {
         mWebView = new Html5WebView(BaseAppliCation.getInstance());
         mWebView.setLayoutParams(params);
         mLayout.addView(mWebView);
-        final Html5WebChromeClient html5WebChromeClient = new Html5WebChromeClient(mUrl, mCommonTitleBar.getCenterTextView());
+        final Html5WebChromeClient html5WebChromeClient = new Html5WebChromeClient(mUrl, mCommonTitleBar
+                .getCenterTextView());
         mWebView.setWebChromeClient(html5WebChromeClient);
         mWebView.loadUrl(mUrl);
+        if (mCollected) {
+            rightImageButton.setImageResource(R.drawable.rating_small_full);
+        } else {
+            rightImageButton.setImageResource(R.drawable.rating_small_empty);
+        }
         rightImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mLinkEntity.isCollection()) {
+                mCollected = !mCollected;
+                if (mCollected) {
+                    rightImageButton.setImageResource(R.drawable.rating_small_full);
+                    ToastUtils.showLongToast(R.string.cancell_colloect);
+                    LinkEntity linkEntity = new LinkEntity();
+                    linkEntity.setTitle(html5WebChromeClient.getTitle());
+                    linkEntity.setWebsite(mUrl);
+                    mLinkEntities1.add(0, linkEntity);
+                    ToastUtils.showLongToast(R.string.colloect);
+                } else {
+                    mLinkEntities1.remove(mEntity);
                     rightImageButton.setImageResource(R.drawable.rating_small_empty);
                     ToastUtils.showLongToast(R.string.cancell_colloect);
-                } else {
-                    rightImageButton.setImageResource(R.drawable.rating_small_full);
-                    ToastUtils.showLongToast(R.string.colloect);
                 }
-                mLinkEntity.setCollection(!mLinkEntity.isCollection());
-
-              //存储
-                List<LinkEntity> mLinkEntities1;
-                String gsonString = SpUtils.getInstance(HTMLWEBCHROMECLIENT).getString(HTMLWEBCHROMECLIENT);
-                if (TextUtils.isEmpty(gsonString)) {
-                    mLinkEntities1 = new ArrayList<>();
-                } else {
-                    mLinkEntities1 = GsonUtil.GsonToList(gsonString, LinkEntity.class);
-                }
-                LinkEntity linkEntity = new LinkEntity();
-                linkEntity.setTitle(html5WebChromeClient.getTitle());
-                linkEntity.setWebsite(mUrl);
-                mLinkEntities1.add(0, linkEntity);
+                //存储
                 String newString = GsonUtil.GsonString(mLinkEntities1);
                 SpUtils.getInstance(HTMLWEBCHROMECLIENT).put(HTMLWEBCHROMECLIENT, newString);
                 Log.i(TAG, "newString:" + newString);
-
-
-
-
 
             }
         });
@@ -137,8 +149,13 @@ public class Html5Fragment extends BaseFragment implements Html5Interface {
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
             // 顶部显示网页加载进度
-            mSeekBar.setProgress(newProgress);
+            if (newProgress == 100) {
+                mProgressBar.setVisibility(View.GONE);
+            } else {
+                mProgressBar.setProgress(newProgress);
+            }
         }
+
     }
 
     @Override
@@ -214,4 +231,19 @@ public class Html5Fragment extends BaseFragment implements Html5Interface {
         return false;
     }
 
+    private boolean isCollected(LinkEntity entity) {
+        if (null != entity) {
+            return true;
+        }
+        return false;
+    }
+
+    private LinkEntity getCollected() {
+        for (int i = 0; i < mLinkEntities1.size(); i++) {
+            if (mLinkEntities1.get(i).getWebsite().equals(mUrl)) {
+                return mLinkEntities1.get(i);
+            }
+        }
+        return null;
+    }
 }
